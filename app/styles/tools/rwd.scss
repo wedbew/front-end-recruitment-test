@@ -1,0 +1,88 @@
+// Example of use is at the bottom of file
+
+$breakpoints-down: (
+  'phone':        '(max-width:  359px)', // p  320  - 359
+  'large-phone':  '(max-width:  479px)', // lp 360  - 479
+  'small-tablet': '(max-width:  599px)', // st 480  - 599
+  'tablet':       '(max-width:  767px)', // t  600  - 467
+  'large-tablet': '(max-width: 1023px)', // lt 468  - 1023
+  'laptop':       '(max-width: 1279px)', // l  1024 - 1279
+  'large-laptop': '(max-width: 1365px)', // ll 1280 - 1365
+  'ultra':        '(max-width: 1599px)'  // u  1366 - 1599
+);
+
+$breakpoints-up: (
+  'phone':        '(min-width:  360px)',
+  'large-phone':  '(min-width:  480px)',
+  'small-tablet': '(min-width:  600px)',
+  'tablet':       '(min-width:  768px)',
+  'large-tablet': '(min-width: 1024px)',
+  'laptop':       '(min-width: 1280px)',
+  'large-laptop': '(min-width: 1366px)',
+  'ultra':        '(min-width: 1600px)'
+);
+
+$mobile-first: false !default;
+
+@mixin rwd($breakpoint, $breakpoint-up: $mobile-first) {
+  @if ($breakpoint-up != false) {
+    @if map-has-key($breakpoints-up, $breakpoint) {
+      @media #{(map-get($breakpoints-up, $breakpoint))} {
+        @content;
+      }
+    } @else {
+      @warn 'Unfortunately, not found breakpoint called `#{$breakpoint}`!';
+    }
+  } @else {
+    @if map-has-key($breakpoints-down, $breakpoint) {
+      @media #{(map-get($breakpoints-down, $breakpoint))} {
+        @content;
+      }
+    } @else {
+      @warn 'Bbreakpoint no found: `#{$breakpoint}`!';
+    }
+  }
+}
+
+/*
+
+  Example:
+
+    ul {
+      margin-bottom: 15px;
+
+      @include rwd(tablet, true) {
+        margin-bottom: 30px;
+      }
+
+      li {
+        margin-bottom: 20px;
+
+        @include rwd(tablet) {
+          margin-bottom: 10px;
+        }
+      }
+    }
+
+  Result:
+
+    ul {
+      margin-bottom: 15px;
+    }
+
+    ul li {
+      margin-bottom: 20px;
+    }
+
+    @media (min-width: 769px) {
+      ul {
+        margin-bottom: 30px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      ul li {
+        margin-bottom: 10px;
+      }
+    }
+*/

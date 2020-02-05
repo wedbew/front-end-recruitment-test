@@ -50,6 +50,7 @@
 
     <!-- Your styles -->
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/core.css">
   </head>
   <body class="mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
@@ -62,16 +63,172 @@
         <div class="mdl-layout--large-screen-only mdl-layout__header-row">
         </div>
         <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
-          <a href="#overview" class="mdl-layout__tab is-active">Bacon</a>
+          <a href="#overview" class="mdl-layout__tab">Bacon</a>
+          <a href="#checkout" class="mdl-layout__tab is-active">Checkout</a>
         </div>
       </header>
       <main class="mdl-layout__content">
-        <div class="mdl-layout__tab-panel is-active" id="overview">
+        <div class="mdl-layout__tab-panel" id="overview">
           <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-            <button action="button">Yeah, I want more bacon!</button>
+            <button class="clone-img mdl-button mdl-js-button mdl-button--raised" action="button">Yeah, I want more bacon!</button>
           </section>
           <section class="container section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
             <img src="http://media.washtimes.com.s3.amazonaws.com/media/image/2015/02/23/bacon.jpg" alt="Bacon" style="width: 100%; height: 100%;">
+          </section>
+        </div>
+        <div class="checkout mdl-layout__tab-panel is-active" data-tab="checkout" id="checkout">
+          <section class="section--center mdl-grid mdl-grid--no-spacing">
+            <form action="#" class="form">
+              <div class="form__container">
+                <div class="form__headline">
+                  <div class="form__numeration">
+                    <div class="form__number">1</div>
+                  </div>
+                  <h2 class="form__legend">
+                    Personal information
+                  </h2>
+                </div>
+                <div class="form__inner">
+                  <div class="form__wrapper">
+                    <div class="form__field form__field--half">
+                      <div class="form__field--content">
+                        <label class="form__label" for="name">First name</label>
+                        <input type="text"  name="name" id="name" class="form__input form__input--minlen" placeholder="Elon" aria-required="true">
+                      </div>
+                      <span class="form__error form__error--required"></span>
+                      <span class="form__error form__error--minlen"></span>
+                    </div>    
+                    <div class="form__field form__field--half">
+                      <div class="form__field--content">
+                        <label class="form__label" for="name">Last name</label>
+                        <input type="text"  name="surname" id="surname" class="form__input form__input--minlen" placeholder="Musk" aria-required="true">
+                      </div>
+                      <span class="form__error form__error--required"></span>
+                      <span class="form__error form__error--minlen"></span>
+                    </div>    
+                    <div class="form__field">
+                      <div class="form__field--content">
+                        <label class="form__label" for="name">Email</label>
+                        <input type="text" name="email" id="email" class="form__input" placeholder="elon@spacex.com" aria-required="true">
+                      </div>
+                      <span class="form__error form__error--required"></span>
+                      <span class="form__error form__error--email"></span>
+                    </div>    
+                    <div class="form__field form__field--half">
+                      <div class="form__field--content">
+                        <label class="form__label" for="name">Country</label>
+                        <select type="text"  name="country" id="country" class="form__input" value="United States" placeholder="United States" aria-required="true">
+                        </select>
+                        <span class="form__cta form__icon form__icon--arrow icon-arrow"></span>
+                      </div>
+                      <span class="form__error form__error--required"></span>
+                    </div>    
+                    <div class="form__field form__field--half">
+                      <div class="form__field--content">
+                        <label class="form__label" for="name">Postal Code</label>
+                        <input type="number"  name="postal" id="postal" class="form__input" placeholder="10001" aria-required="true">
+                      </div>
+                      <span class="form__error form__error--required"></span>
+                    </div>    
+                    <div class="form__field">
+                      <div class="form__field--content">
+                        <label class="form__label" for="name">Phone Number</label>
+                        <input type="tel"  name="phone" id="phone" class="form__input" placeholder="(212) 692-93-92" aria-required="true">
+                      </div>
+                      <span class="form__error form__error--required"></span>
+                    </div>    
+                  </div>
+                </div>
+              </div>
+              <div class="form__container">
+                <div class="form__headline">
+                  <div class="form__numeration">
+                    <div class="form__number">2</div>
+                  </div>
+                  <h2 class="form__legend">
+                    Payments details
+                  </h2>
+                  <span class="form__icon form__icon--lock icon-lock"></span>
+                </div>
+                <div class="form__inner">
+                  <div class="form__wrapper">
+                    <div class="form__field">
+                      <div class="form__field--content">
+                        <label class="form__label" for="name">Credit Card Number</label>
+                        <input type="text"  name="credit" id="credit" class="form__input" placeholder="0000 - 00000 - 00000 - 0000" aria-required="true">
+                        <span data-visa data-mastercard class="form__icon form__cta"></span>
+                      </div>
+                      <span class="form__error form__error--required"></span>
+                    </div>
+                    <div class="form__field form__field--half">
+                      <div class="form__field--content">
+                        <label class="form__label" for="name">Security code</label>
+                        <input type="password"  name="security" id="security" class="form__input" placeholder="***" aria-required="true">
+                        <button class="form__icon form__icon--question form__cta mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="btn2">
+                          <span class="icon-question"></span>
+                        </button>
+                        <div class="form__more mdl-menu mdl-js-menu mdl-menu--top-right" for="btn2">
+                          <p>Lorem, ipsum dolor</p>
+                        </div>
+                      </div>
+                      <span class="form__error form__error--required"></span>
+                    </div>    
+                    <div class="form__field form__field--half">
+                      <div class="form__field--content">
+                        <label class="form__label" for="name">Expiration date</label>
+                        <input type="text"  name="date" id="date" class="form__input" placeholder="MM / YY">
+                      </div>
+                      <span class="form__error form__error--required"></span>
+                    </div>    
+                    <div class="form__field form__field--submit">
+                      <button class="form__submit" type="submit">
+                        <span class="form__icon form__icon--basket icon-shopping-cart"></span>
+                        Complete Purchase</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form__response" hidden>
+                <div class="form__loader" hidden>
+                  <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                </div>
+                <h4 class="form__response--success" hidden>Form submit successfully</h4>
+                <h4 class="form__response--error" hidden>Error(s) occurred! The form wasn't submitted</h4>
+              </div>       
+            </form>
+            <div class="basket">
+              <div class="basket__wrapper">
+                <div class="basket__inner">
+                  <div class="basket__item">
+                    <h3 class="basket__headline">Your order</h3>
+                  </div>
+                  <div class="basket__block">
+                    <div class="basket__item">
+                      <p class="basket__name">Apple Watch Sport</p>
+                      <p class="basket__price">$ 580</p>
+                    </div>
+                    <div class="basket__item">
+                      <p class="basket__name">Modern Buckle</p>
+                      <p class="basket__price">$ 380</p>
+                    </div>
+                  </div>
+                  <div class="basket__block">
+                    <div class="basket__item">
+                      <p class="basket__name">Total purchases</p>
+                      <p class="basket__price">$ 960</p>
+                    </div>
+                    <div class="basket__item">
+                      <p class="basket__name">Estimated tax</p>
+                      <p class="basket__price">$ 0</p>
+                    </div>
+                  </div>
+                  <div class="basket__item">
+                    <p class="basket__name basket__name--bold">Total</p>
+                    <p class="basket__price basket__price--bold">$ 960</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </section>
         </div>
         <footer class="mdl-mega-footer">
@@ -133,6 +290,7 @@
     <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
     <!-- build:js(app/) ../../scripts/main.min.js -->
     <script src="scripts/main.js"></script>
+    <script type="text/javascript" src="countries.json"></script>
     <!-- endbuild -->
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
