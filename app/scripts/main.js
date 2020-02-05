@@ -96,4 +96,232 @@
       (el, i) => element.setAttribute(attrs[i].name, attrs[i].value));
     container.appendChild(element);
   };
+
+  // List of caountries
+  const path = window.location.origin;
+  const countries = 'countries.json';
+  const listOfCountries = path + '/' + countries;
+
+  fetch(listOfCountries)
+    .then( (res) => res.json() )
+    .then( (data) => {
+      const items = data;
+      const select = document.querySelector('#country');
+      items.forEach( (item) => {
+        const option = document.createElement('option');
+        option.setAttribute('value', item.name);
+        option.innerText = item.name;
+        if (item.name === 'United States') {
+          option.selected = true;
+        }
+        option.classList.add('form__option');
+        select.appendChild(option);
+      });
+    })
+    .catch( (err) => {
+      console.log(err);
+      const select = document.querySelector('#country');
+      const option = document.createElement('option');
+      option.setAttribute('value', 'United States');
+      option.innerText = 'United States';
+      option.classList.add('form__option');
+      select.appendChild(option);
+    });
+
+  // Form validation
+  const btn2 = document.querySelector('#btn2');
+  const form = document.querySelector('.form');
+
+  btn2.addEventListener('click', (e) => {
+    e.preventDefault();
+  });
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    required();
+    minLength();
+    emailValidation();
+    validateCreditCardNumber();
+    const errors = catchErros();
+    const response = document.querySelector('.form__response');
+    const succes = response.querySelector('.form__response--success');
+    const error = response.querySelector('.form__response--error');
+    const loader = document.querySelector('.form__loader');
+    loader.hidden = true;
+    response.hidden = true;
+    error.hidden = true;
+    succes.hidden = true;
+    if (errors === true) {
+      response.hidden = false;
+      error.hidden = false;
+      succes.hidden = true;
+    } else {
+      response.hidden = false;
+      loader.hidden = false;
+      setTimeout(() => {
+        loader.hidden = true;
+        succes.hidden = false;
+        error.hidden = true;
+      }, 5000);
+      setTimeout(() => {
+        response.hidden = true;
+      }, 8000);
+    }
+  });
+
+  /**
+   * Catch error.
+   * @param {null} empty no argument.
+   * @return {boolean}
+   */
+  function catchErros() {
+    const inputs = [...document.querySelectorAll('.form__input')];
+    const errors = [];
+    inputs.forEach( (input) => {
+      const parent = input.parentElement.parentElement;
+      const error = parent.querySelector('[data-error]');
+      if (error == null) {
+        console.log('error');
+      } else {
+        errors.push(error);
+      }
+    });
+    if (errors.length == 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  /**
+   * Check if value is not null.
+   * @param {null} empty no argument.
+   */
+  function required() {
+    const inputs = [...document.querySelectorAll('.form__input')];
+    inputs.forEach( (input) => {
+      const value = input.value.length;
+      const required = 'This field is required';
+      const parent = input.parentElement.parentElement;
+      if (!value > 0) {
+        parent.querySelector('.form__error--required').innerText = required;
+        parent.querySelector('.form__error--required')
+          .setAttribute('data-error', true);
+      } else {
+        parent.querySelector('.form__error--required').innerText = '';
+        parent.querySelector('.form__error--required')
+          .removeAttribute('data-error');
+      }
+    });
+  }
+
+  /**
+   * Check if value is not null.
+   * @param {null} empty no argument.
+   */
+  function minLength() {
+    const inputs = [...document.querySelectorAll('.form__input--minlen')];
+    inputs.forEach( (input) => {
+      const value = input.value.length;
+      const minlen = 'This value is too short';
+      const parent = input.parentElement.parentElement;
+      if (value < 2) {
+        parent.querySelector('.form__error--minlen').innerText = minlen;
+        parent.querySelector('.form__error--minlen')
+          .setAttribute('data-error', true);
+      } else {
+        parent.querySelector('.form__error--minlen').innerText = '';
+        parent.querySelector('.form__error--minlen')
+          .removeAttribute('data-error');
+      }
+    });
+  }
+
+  // Email
+  /**
+   * Regex on email input value.
+   * @param {string} input DOM input element.
+   * @return {boolean}
+   */
+  function regExEmail(input) {
+    const emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return emailRegEx.test(String(input.value).toLowerCase());
+  }
+
+  /**
+   * Email validation.
+   * @param {string} input DOM input element.
+   */
+  function emailValidation() {
+    const email = document.querySelector('#email');
+    const validation = regExEmail(email);
+    const error = document.querySelector('.form__error--email');
+    const errorName = 'Email format is inncroect';
+    if (validation === true) {
+      if (error) {
+        error.remove('data-error');
+        error.innerText = '';
+      }
+    } else {
+      if (error) {
+        error.setAttribute('data-error', true);
+        error.innerText = errorName;
+      }
+    }
+  }
+
+  /**
+   * Create element.
+   * @param {null} empty no argument.
+   */
+  function validateCreditCardNumber() {
+    const cc = document.querySelector('#credit');
+    const ccNum = cc.value;
+    const visaRegEx = /^(?:4[0-9]{12}(?:[0-9]{3})?)$/;
+    const mastercardRegEx = /^(?:5[1-5][0-9]{14})$/;
+
+    if (ccNum.length > 0) {
+      if (visaRegEx.test(ccNum)) {
+        const visa = document.querySelector(`span[data-visa]`);
+        visa.classList.remove('icon-mastercard');
+        visa.classList.remove('form__icon--mastercard');
+        visa.classList.add('icon-visa');
+        visa.classList.add('form__icon--visa');
+      } else if (mastercardRegEx.test(ccNum)) {
+        const mastercard = document.querySelector(`span[data-mastercard]`);
+        mastercard.classList.remove('icon-visa');
+        mastercard.classList.remove('form__icon--visa');
+        mastercard.classList.add('icon-mastercard');
+        mastercard.classList.add('form__icon--mastercard');
+      } else {
+        const visa = document.querySelector(`span[data-visa]`);
+        visa.classList.add('icon-visa');
+        visa.classList.add('form__icon--visa');
+        visa.classList.remove('icon-mastercard');
+        visa.classList.remove('form__icon--mastercard');
+      }
+    } else {
+      return;
+    }
+  }
+
+  const creditCard = document.querySelector('#credit');
+  creditCard.addEventListener('keyup', () => {
+    validateCreditCardNumber();
+  });
+
+  // const cc = document.querySelector('#credit');
+  // cc.addEventListener('keyup', (e) =>{
+  //   const value = e.target.value.split('-').join('');
+  //   const content = null;
+  //   if (value.length > 0) {
+  //     content = value.match(new RegExp('.{1,4}', 'g')).join('-');
+  //   }
+  //   e.target.value = content;
+  // });
+
+  const visa = document.querySelector(`span[data-visa]`);
+  visa.classList.add('icon-visa');
+  visa.classList.add('form__icon--visa');
+  visa.classList.remove('icon-mastercard');
+  visa.classList.remove('form__icon--mastercard');
 })();
