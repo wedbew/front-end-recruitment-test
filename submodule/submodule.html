@@ -117,7 +117,7 @@
                     <div class="form__field form__field--half">
                       <div class="form__field--content">
                         <label class="form__label" for="name">Country</label>
-                        <select type="text"  name="country" id="country" class="form__input" value="United States" placeholder="United States" aria-required="true">
+                        <select type="text"  name="country" id="country" class="form__input" value="United States" placeholder="United States" aria-required="true" open>
                         </select>
                         <span class="form__cta form__icon form__icon--arrow icon-arrow"></span>
                       </div>
@@ -156,7 +156,7 @@
                       <div class="form__field--content">
                         <label class="form__label" for="name">Credit Card Number</label>
                         <input type="text"  name="credit" id="credit" class="form__input" placeholder="0000 - 00000 - 00000 - 0000" aria-required="true">
-                        <span data-visa data-mastercard class="form__icon form__cta"></span>
+                        <span data-cc data-visa data-mastercard class="form__icon form__cta"></span>
                       </div>
                       <span class="form__error form__error--required"></span>
                     </div>
@@ -288,6 +288,9 @@
     </div>
 
     <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
+    <script src="https://pagecdn.io/lib/cleave/1.5.3/cleave.min.js"></script>
+    <script src="https://pagecdn.io/lib/cleave/1.5.3/addons/cleave-phone.us.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.5.3/cleave.min.js"></script> -->
     <!-- build:js(app/) ../../scripts/main.min.js -->
     <script src="scripts/main.js"></script>
     <script type="text/javascript" src="countries.json"></script>

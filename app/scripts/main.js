@@ -270,7 +270,7 @@
   }
 
   /**
-   * Create element.
+   * Validate credit card number.
    * @param {null} empty no argument.
    */
   function validateCreditCardNumber() {
@@ -304,24 +304,57 @@
     }
   }
 
-  const creditCard = document.querySelector('#credit');
-  creditCard.addEventListener('keyup', () => {
-    validateCreditCardNumber();
-  });
+  /**
+   * Remove required
+   * @param {null} empty no argument.
+   */
+  function removeRequired() {
+    const inputs = [...document.querySelectorAll('.form__input')];
+    inputs.forEach( (input) => {
+      input.addEventListener('keyup', (e) => {
+        if (e.target.value.length > 0) {
+          e.target.parentElement.parentElement
+            .querySelector('.form__error--required').removeAttribute('data-error');
+          e.target.parentElement.parentElement
+            .querySelector('.form__error--required').innerText = '';
+        }
+      });
+    });
+  }
 
-  // const cc = document.querySelector('#credit');
-  // cc.addEventListener('keyup', (e) =>{
-  //   const value = e.target.value.split('-').join('');
-  //   const content = null;
-  //   if (value.length > 0) {
-  //     content = value.match(new RegExp('.{1,4}', 'g')).join('-');
-  //   }
-  //   e.target.value = content;
-  // });
-
-  const visa = document.querySelector(`span[data-visa]`);
-  visa.classList.add('icon-visa');
-  visa.classList.add('form__icon--visa');
-  visa.classList.remove('icon-mastercard');
-  visa.classList.remove('form__icon--mastercard');
+  /**
+   * Iitial values.
+   * @param {null} empty no argument.
+   */
+  function init() {
+    const creditCard = document.querySelector('[data-cc]');
+    creditCard.classList.add('icon-visa');
+    creditCard.classList.add('form__icon--visa');
+    creditCard.classList.remove('icon-mastercard');
+    creditCard.classList.remove('form__icon--mastercard');
+    creditCard.addEventListener('keyup', () => {
+      validateCreditCardNumber();
+    });
+    new Cleave('#phone', {
+      phone: true,
+      phoneRegionCode: 'us',
+    });
+    new Cleave('#postal', {
+      numericOnly: true,
+      blocks: [5],
+    });
+    new Cleave('#security', {
+      numericOnly: true,
+      blocks: [3],
+    });
+    new Cleave('#date', {
+      date: true,
+      datePattern: ['m', 'y'],
+    });
+    new Cleave('#credit', {
+      creditCard: true,
+    });
+    removeRequired();
+  }
+  init();
 })();
