@@ -78,95 +78,117 @@
   // Your custom JavaScript goes here
 
   // Clone Img
-
-  const btn = document.querySelector('button');
-  const img = document.querySelector('img');
-  const container = document.querySelector('.container');
-  const attrs = [...img.attributes];
-
-  btn.addEventListener('click', cloneImg);
-
   /**
-   * Create element.
+   * Clone image
    * @param {null} empty no argument.
    */
-  function cloneImg() {
-    const element = document.createElement('img');
-    attrs.forEach(
-      (el, i) => element.setAttribute(attrs[i].name, attrs[i].value));
-    container.appendChild(element);
-  };
+  function cloneImgElement() {
+    const btn = document.querySelector('button');
+    const img = document.querySelector('img');
+    const container = document.querySelector('.container');
+    const attrs = [...img.attributes];
+
+    btn.addEventListener('click', cloneImg);
+
+    /**
+     * Create element.
+     * @param {null} empty no argument.
+     */
+    function cloneImg() {
+      const element = document.createElement('img');
+      attrs.forEach(
+        (el, i) => element.setAttribute(attrs[i].name, attrs[i].value));
+      container.appendChild(element);
+    };
+  }
+  cloneImgElement();
 
   // List of caountries
-  const path = window.location.origin;
-  const countries = 'countries.json';
-  const listOfCountries = path + '/' + countries;
+  /**
+   * Fetch country list
+   * @param {null} empty no argument.
+   */
+  function fetchCountries() {
+    const path = window.location.origin;
+    const countries = 'countries.json';
+    const listOfCountries = path + '/' + countries;
 
-  fetch(listOfCountries)
-    .then( (res) => res.json() )
-    .then( (data) => {
-      const items = data;
-      const select = document.querySelector('#country');
-      items.forEach( (item) => {
+    fetch(listOfCountries)
+      .then( (res) => res.json() )
+      .then( (data) => {
+        const items = data;
+        const select = document.querySelector('#country');
+        items.forEach( (item) => {
+          const option = document.createElement('option');
+          option.setAttribute('value', item.name);
+          option.innerText = item.name;
+          if (item.name === 'United States') {
+            option.selected = true;
+          }
+          option.classList.add('form__option');
+          select.appendChild(option);
+        });
+      })
+      .catch( (err) => {
+        console.log(err);
+        const select = document.querySelector('#country');
         const option = document.createElement('option');
-        option.setAttribute('value', item.name);
-        option.innerText = item.name;
-        if (item.name === 'United States') {
-          option.selected = true;
-        }
+        option.setAttribute('value', 'United States');
+        option.innerText = 'United States';
         option.classList.add('form__option');
         select.appendChild(option);
       });
-    })
-    .catch( (err) => {
-      console.log(err);
-      const select = document.querySelector('#country');
-      const option = document.createElement('option');
-      option.setAttribute('value', 'United States');
-      option.innerText = 'United States';
-      option.classList.add('form__option');
-      select.appendChild(option);
+  }
+  fetchCountries();
+
+  /**
+   * Form validation
+   * @param {null} empty no argument.
+   */
+  function validation() {
+    const formCta = document.querySelector('#btn2');
+    const form = document.querySelector('.form');
+
+    formCta.addEventListener('click', (e) => {
+      e.preventDefault();
     });
-
-  // Form validation
-  const btn2 = document.querySelector('#btn2');
-  const form = document.querySelector('.form');
-
-  btn2.addEventListener('click', (e) => {
-    e.preventDefault();
-  });
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    required();
-    minLength();
-    emailValidation();
-    validateCreditCardNumber();
-    const errors = catchErros();
-    const response = document.querySelector('.form__response');
-    const succes = response.querySelector('.form__response--success');
-    const error = response.querySelector('.form__response--error');
-    const loader = document.querySelector('.form__loader');
-    loader.hidden = true;
-    response.hidden = true;
-    error.hidden = true;
-    succes.hidden = true;
-    if (errors === true) {
-      response.hidden = false;
-      error.hidden = false;
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      required();
+      minLength();
+      emailValidation();
+      const errors = catchErros();
+      const response = document.querySelector('.form__response');
+      const succes = response.querySelector('.form__response--success');
+      const error = response.querySelector('.form__response--error');
+      const loader = document.querySelector('.form__loader');
+      loader.hidden = true;
+      response.hidden = true;
+      error.hidden = true;
       succes.hidden = true;
-    } else {
-      response.hidden = false;
-      loader.hidden = false;
-      setTimeout(() => {
-        loader.hidden = true;
-        succes.hidden = false;
-        error.hidden = true;
-      }, 5000);
-      setTimeout(() => {
-        response.hidden = true;
-      }, 8000);
-    }
-  });
+      if (errors === true) {
+        response.hidden = false;
+        error.hidden = false;
+        succes.hidden = true;
+      } else {
+        response.hidden = false;
+        loader.hidden = false;
+        setTimeout(() => {
+          loader.hidden = true;
+          succes.hidden = false;
+          error.hidden = true;
+        }, 5000);
+        setTimeout(() => {
+          response.hidden = true;
+          const inputs = [...document.querySelectorAll('.form__input')];
+          inputs.forEach( (input) => {
+            input.value = '';
+          });
+        }, 8000);
+      }
+    });
+  }
+  validation();
 
   /**
    * Catch error.
@@ -243,7 +265,9 @@
    * @return {boolean}
    */
   function regExEmail(input) {
+    // eslint-disable-next-line max-len
     const emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
     return emailRegEx.test(String(input.value).toLowerCase());
   }
 
@@ -251,8 +275,13 @@
    * Email validation.
    * @param {string} input DOM input element.
    */
-  function emailValidation() {
-    const email = document.querySelector('#email');
+  function emailValidation(input) {
+    let email;
+    if (input == undefined) {
+      email = document.querySelector('#email');
+    } else {
+      email = input;
+    }
     const validation = regExEmail(email);
     const error = document.querySelector('.form__error--email');
     const errorName = 'Email format is inncroect';
@@ -270,53 +299,21 @@
   }
 
   /**
-   * Validate credit card number.
+   * Remove errors
    * @param {null} empty no argument.
    */
-  function validateCreditCardNumber() {
-    const cc = document.querySelector('#credit');
-    const ccNum = cc.value;
-    const visaRegEx = /^(?:4[0-9]{12}(?:[0-9]{3})?)$/;
-    const mastercardRegEx = /^(?:5[1-5][0-9]{14})$/;
-
-    if (ccNum.length > 0) {
-      if (visaRegEx.test(ccNum)) {
-        const visa = document.querySelector(`span[data-visa]`);
-        visa.classList.remove('icon-mastercard');
-        visa.classList.remove('form__icon--mastercard');
-        visa.classList.add('icon-visa');
-        visa.classList.add('form__icon--visa');
-      } else if (mastercardRegEx.test(ccNum)) {
-        const mastercard = document.querySelector(`span[data-mastercard]`);
-        mastercard.classList.remove('icon-visa');
-        mastercard.classList.remove('form__icon--visa');
-        mastercard.classList.add('icon-mastercard');
-        mastercard.classList.add('form__icon--mastercard');
-      } else {
-        const visa = document.querySelector(`span[data-visa]`);
-        visa.classList.add('icon-visa');
-        visa.classList.add('form__icon--visa');
-        visa.classList.remove('icon-mastercard');
-        visa.classList.remove('form__icon--mastercard');
-      }
-    } else {
-      return;
-    }
-  }
-
-  /**
-   * Remove required
-   * @param {null} empty no argument.
-   */
-  function removeRequired() {
+  function removeErrors() {
     const inputs = [...document.querySelectorAll('.form__input')];
     inputs.forEach( (input) => {
       input.addEventListener('keyup', (e) => {
-        if (e.target.value.length > 0) {
+        switch (e.target.value.length) {
+        case (e.target.value.length > 0):
           e.target.parentElement.parentElement
-            .querySelector('.form__error--required').removeAttribute('data-error');
+            .querySelector('.form__error--required')
+            .removeAttribute('data-error');
           e.target.parentElement.parentElement
             .querySelector('.form__error--required').innerText = '';
+          break;
         }
       });
     });
@@ -332,9 +329,6 @@
     creditCard.classList.add('form__icon--visa');
     creditCard.classList.remove('icon-mastercard');
     creditCard.classList.remove('form__icon--mastercard');
-    creditCard.addEventListener('keyup', () => {
-      validateCreditCardNumber();
-    });
     new Cleave('#phone', {
       phone: true,
       phoneRegionCode: 'us',
@@ -353,8 +347,29 @@
     });
     new Cleave('#credit', {
       creditCard: true,
+      onCreditCardTypeChanged: function(e) {
+        const cardName = e;
+        switch (cardName) {
+        case 'mastercard':
+          creditCard.classList.add('icon-mastercard',
+            'form__icon--mastercard');
+          creditCard.classList.remove('icon-visa', 'form__icon--visa');
+          break;
+        case 'visa':
+          creditCard.classList.remove('icon-mastercard',
+            'form__icon--mastercard');
+          creditCard.classList.add('icon-visa',
+            'form__icon--visa');
+          break;
+        default:
+          console.log(cardName);
+          creditCard.classList.remove('icon-mastercard',
+            'form__icon--mastercard');
+          creditCard.classList.add('icon-visa', 'form__icon--visa');
+        }
+      },
     });
-    removeRequired();
+    removeErrors();
   }
   init();
 })();
