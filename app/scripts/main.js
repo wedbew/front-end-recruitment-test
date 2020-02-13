@@ -1,3 +1,4 @@
+// import Formatter from './formatter';
 /*
  *
  *  Web Starter Kit
@@ -75,6 +76,9 @@
       });
   }
 
+
+  // new Formatter();
+
   // Your custom JavaScript goes here
 
   // Clone Img
@@ -119,15 +123,16 @@
         const items = data;
         const select = document.querySelector('#country');
         items.forEach( (item) => {
-          const option = document.createElement('option');
+          const option = document.createElement('span');
           option.setAttribute('value', item.name);
           option.innerText = item.name;
           if (item.name === 'United States') {
-            option.selected = true;
+            option.setAttribute('data-selected', true);
           }
           option.classList.add('form__option');
           select.appendChild(option);
         });
+        openSelect();
       })
       .catch( (err) => {
         console.log(err);
@@ -140,6 +145,54 @@
       });
   }
   fetchCountries();
+
+  /**
+   * Open select
+   * @param {null} empty no argument.
+   */
+  function openSelect() {
+    const input = document.querySelector('input[name="country"]');
+    const inputs = document.querySelectorAll('.form__input');
+    const select = document.querySelector('.form__datalist');
+    const options = document.querySelectorAll('.form__option');
+    const arrow = document.querySelector('.form__icon--arrow');
+    input.addEventListener('keyup', (e) => {
+      const value = document.querySelector('input[name="country"]').value;
+      options.forEach((option) => {
+        if (option.textContent.toUpperCase().indexOf(value.toUpperCase()) > -1) {
+          option.style.display = '';
+        } else {
+          option.style.display = 'none';
+        }
+      });
+    });
+    inputs.forEach((item)=> {
+      item.addEventListener('focus', () => {
+        if (item.getAttribute('name') !== 'country') {
+          select.classList.remove('form__datalist--active');
+        }
+      });
+    });
+    input.addEventListener('click', (e) => {
+      select.classList.toggle('form__datalist--active');
+    });
+    arrow.addEventListener('click', () => {
+      if (select.classList.contains('form__datalist--active')) {
+        select.classList.remove('form__datalist--active');
+      } else {
+        select.classList.toggle('form__datalist--active');
+      }
+    });
+    options.forEach((option) => {
+      const input = document.querySelector('input[name="country"]');
+      if (option.getAttribute('data-selected')) {
+        input.value = option.innerText;
+      }
+      option.addEventListener('click', (e) => {
+        input.value = e.target.innerText;
+      });
+    });
+  }
 
   /**
    * Form validation

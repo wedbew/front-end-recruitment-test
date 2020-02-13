@@ -114,11 +114,12 @@
                       <span class="form__error form__error--required"></span>
                       <span class="form__error form__error--email"></span>
                     </div>    
-                    <div class="form__field form__field--half">
+                    <div class="form__field form__field--half form__field--select">
                       <div class="form__field--content">
                         <label class="form__label" for="name">Country</label>
-                        <select type="text"  name="country" id="country" class="form__input" value="United States" placeholder="United States" aria-required="true" open>
-                        </select>
+                        <input type="text" name="country" list="country" class="form__input"  placeholder="United States" aria-required="true" autocomplete="off">
+                        <div id="country" class="form__datalist">
+                        </div>
                         <span class="form__cta form__icon form__icon--arrow icon-arrow"></span>
                       </div>
                       <span class="form__error form__error--required"></span>

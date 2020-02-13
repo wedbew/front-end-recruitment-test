@@ -65,6 +65,8 @@
   &__field {
     width: 100%;
     min-width: 140px;
+    z-index: 1;
+    position: relative;
     &--half {
       width: 48%;
       @include rwd('large-phone') {
@@ -82,6 +84,9 @@
     &--submit {
       background: transparent;
       box-shadow: none;
+    }
+    &--select {
+      z-index: 2;
     }
   }
 
@@ -102,6 +107,7 @@
   }
 
   &__label {
+    position: absolute;
     padding-left: 8px;
     padding-right: 8px;
     padding-top: 5px;
@@ -116,10 +122,38 @@
     padding-left: 8px;
     padding-right: 8px;
     padding-bottom: 5px;
+    min-height: 45px;
+    padding-top: 22px;
     width: 100%;
     font-size: 1em;
     -webkit-appearance: none;
     background: transparent;
+  }
+
+  &__datalist {
+    position: absolute;
+    display: none;
+    max-height: 250px;
+    overflow: auto;
+    width: 100%;
+    background: $white;
+    box-shadow: 0px 2px  0px rgba($grey-dark, .125);
+    
+    span {
+      padding: 0 8px;
+      &:first-child {
+        padding-top: 8px;
+      }
+      &:hover {
+        background: rgba($black, 0.025);
+        cursor: pointer;
+      }
+    }
+
+    &--active {
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   ::placeholder {
@@ -148,6 +182,7 @@
       padding-top: 5px;
       padding-bottom: 5px;
       padding-left: 5px;
+      cursor: pointer;
     }
     &--basket {
       font-size: 1em;
@@ -167,6 +202,7 @@
     }
     &--question {
       font-size: 1.25em;
+      cursor: pointer;
     }
   }
 
