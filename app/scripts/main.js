@@ -159,7 +159,8 @@
     input.addEventListener('keyup', (e) => {
       const value = document.querySelector('input[name="country"]').value;
       options.forEach((option) => {
-        if (option.textContent.toUpperCase().indexOf(value.toUpperCase()) > -1) {
+        if (option.textContent
+          .toUpperCase().indexOf(value.toUpperCase()) > -1) {
           option.style.display = '';
         } else {
           option.style.display = 'none';
@@ -275,14 +276,11 @@
     const inputs = [...document.querySelectorAll('.form__input')];
     inputs.forEach( (input) => {
       const value = input.value.length;
-      const required = 'This field is required';
       const parent = input.parentElement.parentElement;
       if (!value > 0) {
-        parent.querySelector('.form__error--required').innerText = required;
         parent.querySelector('.form__error--required')
           .setAttribute('data-error', true);
       } else {
-        parent.querySelector('.form__error--required').innerText = '';
         parent.querySelector('.form__error--required')
           .removeAttribute('data-error');
       }
@@ -297,14 +295,12 @@
     const inputs = [...document.querySelectorAll('.form__input--minlen')];
     inputs.forEach( (input) => {
       const value = input.value.length;
-      const minlen = 'This value is too short';
       const parent = input.parentElement.parentElement;
-      if (value < 2) {
-        parent.querySelector('.form__error--minlen').innerText = minlen;
+      const minlen = parseInt(input.getAttribute('data-minlen'));
+      if (value < minlen) {
         parent.querySelector('.form__error--minlen')
           .setAttribute('data-error', true);
       } else {
-        parent.querySelector('.form__error--minlen').innerText = '';
         parent.querySelector('.form__error--minlen')
           .removeAttribute('data-error');
       }
@@ -337,16 +333,13 @@
     }
     const validation = regExEmail(email);
     const error = document.querySelector('.form__error--email');
-    const errorName = 'Email format is inncroect';
     if (validation === true) {
       if (error) {
         error.remove('data-error');
-        error.innerText = '';
       }
     } else {
       if (error) {
         error.setAttribute('data-error', true);
-        error.innerText = errorName;
       }
     }
   }
@@ -359,14 +352,14 @@
     const inputs = [...document.querySelectorAll('.form__input')];
     inputs.forEach( (input) => {
       input.addEventListener('keyup', (e) => {
-        switch (e.target.value.length) {
-        case (e.target.value.length > 0):
-          e.target.parentElement.parentElement
-            .querySelector('.form__error--required')
+        const value = e.target.value;
+        const parent = e.target.parentElement.parentElement;
+        if (!value.length > 0) {
+          parent.querySelector('.form__error--required')
+            .setAttribute('data-error', true);
+        } else {
+          parent.querySelector('.form__error--required')
             .removeAttribute('data-error');
-          e.target.parentElement.parentElement
-            .querySelector('.form__error--required').innerText = '';
-          break;
         }
       });
     });

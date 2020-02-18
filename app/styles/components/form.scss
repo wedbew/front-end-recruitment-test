@@ -206,6 +206,10 @@
     }
   }
 
+  &__error {
+    display: none;
+  }
+
   [data-error] {
     display: inline-block;
     font-size: 1em;

@@ -93,26 +93,26 @@
                     <div class="form__field form__field--half">
                       <div class="form__field--content">
                         <label class="form__label" for="name">First name</label>
-                        <input type="text"  name="name" id="name" class="form__input form__input--minlen" placeholder="Elon" aria-required="true">
+                        <input type="text" name="name" id="name" class="form__input form__input--minlen" placeholder="Elon" aria-required="true" data-minlen="2">
                       </div>
-                      <span class="form__error form__error--required"></span>
-                      <span class="form__error form__error--minlen"></span>
+                      <span class="form__error form__error--required">This field is required</span>
+                      <span class="form__error form__error--minlen" >This value is too short</span>
                     </div>    
                     <div class="form__field form__field--half">
                       <div class="form__field--content">
                         <label class="form__label" for="name">Last name</label>
-                        <input type="text"  name="surname" id="surname" class="form__input form__input--minlen" placeholder="Musk" aria-required="true">
+                        <input type="text"  name="surname" id="surname" class="form__input form__input--minlen" placeholder="Musk" aria-required="true" data-minlen="2">
                       </div>
-                      <span class="form__error form__error--required"></span>
-                      <span class="form__error form__error--minlen"></span>
+                      <span class="form__error form__error--required">This field is required</span>
+                      <span class="form__error form__error--minlen">This value is too short</span>
                     </div>    
                     <div class="form__field">
                       <div class="form__field--content">
                         <label class="form__label" for="name">Email</label>
                         <input type="text" name="email" id="email" class="form__input" placeholder="elon@spacex.com" aria-required="true">
                       </div>
-                      <span class="form__error form__error--required"></span>
-                      <span class="form__error form__error--email"></span>
+                      <span class="form__error form__error--required">This field is required</span>
+                      <span class="form__error form__error--email">Email format is inncroect</span>
                     </div>    
                     <div class="form__field form__field--half form__field--select">
                       <div class="form__field--content">
@@ -122,21 +122,21 @@
                         </div>
                         <span class="form__cta form__icon form__icon--arrow icon-arrow"></span>
                       </div>
-                      <span class="form__error form__error--required"></span>
+                      <span class="form__error form__error--required">This field is required</span>
                     </div>    
                     <div class="form__field form__field--half">
                       <div class="form__field--content">
                         <label class="form__label" for="name">Postal Code</label>
                         <input type="number"  name="postal" id="postal" class="form__input" placeholder="10001" aria-required="true">
                       </div>
-                      <span class="form__error form__error--required"></span>
+                      <span class="form__error form__error--required">This field is required</span>
                     </div>    
                     <div class="form__field">
                       <div class="form__field--content">
                         <label class="form__label" for="name">Phone Number</label>
                         <input type="tel"  name="phone" id="phone" class="form__input" placeholder="(212) 692-93-92" aria-required="true">
                       </div>
-                      <span class="form__error form__error--required"></span>
+                      <span class="form__error form__error--required">This field is required</span>
                     </div>    
                   </div>
                 </div>
@@ -156,15 +156,16 @@
                     <div class="form__field">
                       <div class="form__field--content">
                         <label class="form__label" for="name">Credit Card Number</label>
-                        <input type="text"  name="credit" id="credit" class="form__input" placeholder="0000 - 00000 - 00000 - 0000" aria-required="true">
+                        <input type="text"  name="credit" id="credit" class="form__input form__input--minlen" placeholder="0000 - 0000 - 0000 - 0000" aria-required="true" data-minlen="16">
                         <span data-cc class="form__icon form__cta"></span>
                       </div>
-                      <span class="form__error form__error--required"></span>
+                      <span class="form__error form__error--required">This field is required</span>
+                      <span class="form__error form__error--minlen">This value is too short</span>
                     </div>
                     <div class="form__field form__field--half">
                       <div class="form__field--content">
                         <label class="form__label" for="name">Security code</label>
-                        <input type="password"  name="security" id="security" class="form__input" placeholder="***" aria-required="true">
+                        <input type="password"  name="security" id="security" class="form__input form__input--minlen" placeholder="***" aria-required="true" data-minlen="3">
                         <button class="form__icon form__icon--question form__cta mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="btn2">
                           <span class="icon-question"></span>
                         </button>
@@ -172,14 +173,15 @@
                           <p>Lorem, ipsum dolor</p>
                         </div>
                       </div>
-                      <span class="form__error form__error--required"></span>
+                      <span class="form__error form__error--required">This field is required</span>
+                      <span class="form__error form__error--minlen">This value is too short</span>
                     </div>    
                     <div class="form__field form__field--half">
                       <div class="form__field--content">
                         <label class="form__label" for="name">Expiration date</label>
                         <input type="text"  name="date" id="date" class="form__input" placeholder="MM / YY">
                       </div>
-                      <span class="form__error form__error--required"></span>
+                      <span class="form__error form__error--required">This field is required</span>
                     </div>    
                     <div class="form__field form__field--submit">
                       <button class="form__submit" type="submit">
