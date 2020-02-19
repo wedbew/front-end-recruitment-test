@@ -1,3 +1,4 @@
+
 // import Formatter from './formatter';
 /*
  *
@@ -419,3 +420,5 @@
   }
   init();
 })();
+
+document.test = new Test();
