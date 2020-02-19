@@ -336,7 +336,7 @@
     const error = document.querySelector('.form__error--email');
     if (validation === true) {
       if (error) {
-        error.remove('data-error');
+        error.removeAttribute('data-error');
       }
     } else {
       if (error) {
