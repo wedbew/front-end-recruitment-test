@@ -77,9 +77,6 @@
       });
   }
 
-
-  // new Formatter();
-
   // Your custom JavaScript goes here
 
   // Clone Img
@@ -88,13 +85,16 @@
    * @param {null} empty no argument.
    */
   function cloneImgElement() {
-    const btn = document.querySelector('button');
-    const img = document.querySelector('img');
+    const btn = document.querySelector('.clone-img--cta');
+    const img = document.querySelector('.clone-img');
     const container = document.querySelector('.container');
+
+    if (!btn) {
+      return;
+    }
+
     const attrs = [...img.attributes];
-
     btn.addEventListener('click', cloneImg);
-
     /**
      * Create element.
      * @param {null} empty no argument.
@@ -123,6 +123,11 @@
       .then( (data) => {
         const items = data;
         const select = document.querySelector('#country');
+
+        if (!select) {
+          return;
+        }
+
         items.forEach( (item) => {
           const option = document.createElement('span');
           option.setAttribute('value', item.name);
@@ -138,6 +143,11 @@
       .catch( (err) => {
         console.log(err);
         const select = document.querySelector('#country');
+
+        if (!select) {
+          return;
+        }
+
         const option = document.createElement('option');
         option.setAttribute('value', 'United States');
         option.innerText = 'United States';
@@ -152,8 +162,11 @@
    * @param {null} empty no argument.
    */
   function openSelect() {
-    const input = document.querySelector('input[name="country"]');
     const inputs = document.querySelectorAll('.form__input');
+    if (!inputs) {
+      return;
+    }
+    const input = document.querySelector('input[name="country"]');
     const select = document.querySelector('.form__datalist');
     const options = document.querySelectorAll('.form__option');
     const arrow = document.querySelector('.form__icon--arrow');
@@ -201,8 +214,12 @@
    * @param {null} empty no argument.
    */
   function validation() {
-    const formCta = document.querySelector('#btn2');
     const form = document.querySelector('.form');
+    if (!form) {
+      return;
+    }
+
+    const formCta = form.querySelector('#btn2');
 
     formCta.addEventListener('click', (e) => {
       e.preventDefault();
@@ -252,9 +269,12 @@
    */
   function catchErros() {
     const inputs = [...document.querySelectorAll('.form__input')];
+    if (!inputs) {
+      return;
+    }
     const errors = [];
     inputs.forEach( (input) => {
-      const parent = input.parentElement.parentElement;
+      const parent = input.closest('.form__field');
       const error = parent.querySelector('[data-error]');
       if (error == null) {
         console.log('error');
@@ -275,17 +295,29 @@
    */
   function required() {
     const inputs = [...document.querySelectorAll('.form__input')];
+    if (!inputs) {
+      return;
+    }
     inputs.forEach( (input) => {
       const value = input.value.length;
-      const parent = input.parentElement.parentElement;
-      if (!value > 0) {
-        parent.querySelector('.form__error--required')
-          .setAttribute('data-error', true);
-      } else {
-        parent.querySelector('.form__error--required')
-          .removeAttribute('data-error');
-      }
+      const parent = input.closest('.form__field');
+      checkIfEmpty(value, parent);
     });
+  }
+
+  /**
+   * Check length.
+   * @param {string} value value of the input.
+   * @param {string} parent parent element of input.
+   */
+  function checkIfEmpty(value, parent) {
+    if (!value > 0) {
+      parent.querySelector('.form__error--required')
+        .setAttribute('data-error', true);
+    } else {
+      parent.querySelector('.form__error--required')
+        .removeAttribute('data-error');
+    }
   }
 
   /**
@@ -294,18 +326,30 @@
    */
   function minLength() {
     const inputs = [...document.querySelectorAll('.form__input--minlen')];
+    if (!inputs) {
+      return;
+    }
     inputs.forEach( (input) => {
       const value = input.value.length;
-      const parent = input.parentElement.parentElement;
+      const parent = input.closest('.form__field');
       const minlen = parseInt(input.getAttribute('data-minlen'));
-      if (value < minlen) {
-        parent.querySelector('.form__error--minlen')
-          .setAttribute('data-error', true);
-      } else {
-        parent.querySelector('.form__error--minlen')
-          .removeAttribute('data-error');
-      }
+      checkLength(value, minlen, parent);
     });
+  }
+  /**
+   * Check length.
+   * @param {string} value value of the input.
+   * @param {number} minlen minimum length of the value.
+   * @param {string} parent parent element of input.
+   */
+  function checkLength(value, minlen, parent) {
+    if (value < minlen) {
+      parent.querySelector('.form__error--minlen')
+        .setAttribute('data-error', true);
+    } else {
+      parent.querySelector('.form__error--minlen')
+        .removeAttribute('data-error');
+    }
   }
 
   // Email
@@ -329,6 +373,9 @@
     let email;
     if (input == undefined) {
       email = document.querySelector('#email');
+      if (!email) {
+        return;
+      }
     } else {
       email = input;
     }
@@ -336,7 +383,7 @@
     const error = document.querySelector('.form__error--email');
     if (validation === true) {
       if (error) {
-        error.remove('data-error');
+        error.removeAttribute('data-error');
       }
     } else {
       if (error) {
@@ -351,16 +398,21 @@
    */
   function removeErrors() {
     const inputs = [...document.querySelectorAll('.form__input')];
+    if (!inputs) {
+      return;
+    }
     inputs.forEach( (input) => {
       input.addEventListener('keyup', (e) => {
         const value = e.target.value;
-        const parent = e.target.parentElement.parentElement;
-        if (!value.length > 0) {
-          parent.querySelector('.form__error--required')
-            .setAttribute('data-error', true);
-        } else {
-          parent.querySelector('.form__error--required')
-            .removeAttribute('data-error');
+        const parent = input.closest('.form__field');
+        checkIfEmpty(value, parent);
+
+        const minlen = parseInt(input.getAttribute('data-minlen'));
+        if (minlen) {
+          checkLength(value.length, minlen, parent);
+        }
+        if (input.getAttribute('name') == 'email') {
+          emailValidation(input);
         }
       });
     });
@@ -372,10 +424,19 @@
    */
   function init() {
     const creditCard = document.querySelector('[data-cc]');
-    creditCard.classList.add('icon-visa');
-    creditCard.classList.add('form__icon--visa');
-    creditCard.classList.remove('icon-mastercard');
-    creditCard.classList.remove('form__icon--mastercard');
+    if (!creditCard) {
+      return;
+    }
+    creditCard.classList.add('icon-visa', 'form__icon--visa');
+    creditCard.classList.remove('icon-mastercard', 'form__icon--mastercard');
+
+    try {
+      Cleave;
+    } catch (error) {
+      console.error(error);
+      return;
+    }
+
     new Cleave('#phone', {
       phone: true,
       phoneRegionCode: 'us',
@@ -421,4 +482,4 @@
   init();
 })();
 
-document.test = new Test();
+
